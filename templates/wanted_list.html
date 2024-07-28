@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        justify-items: center;
+        align-items: center;
+    }
+    .grid-item {
+        position: relative;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .grid-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .grid-item .info {
+        position: absolute;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+    }
+</style>
+
+<div class="container">
+    <h1 class="text-center mt-5">People in Wanted List</h1>
+    <div class="grid-container" id="matchesList">
+        {% for image in images %}
+            <div class="grid-item">
+                <img src="{{ image.url }}" alt="Image" class="image-thumbnail">
+                <div class="info">
+                    <p>Added to list On: {{ image.creation_time }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

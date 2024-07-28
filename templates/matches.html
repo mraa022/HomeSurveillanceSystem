@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    table thead {
+        background-color: #333;
+        color: #fff;
+    }
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #302a2a;
+    }
+    table tr:hover {
+        background-color: #261f1f;
+    }
+    table img {
+        width: 100px;
+        height: auto;
+        border-radius: 5px;
+    }
+    .no-matches {
+        text-align: center;
+        font-size: 18px;
+        color: #999;
+    }
+</style>
+
+<div class="container">
+    <h1>Image Matches</h1>
+    <table id="matchesTable">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Creation Time</th>
+                <th>Match Percent</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <section id="image-gallery"></section>
+</div>
+
+<script>
+    const matches = JSON.parse(sessionStorage.getItem('matches')) || [];
+    const matchesTableBody = document.querySelector('#matchesTable tbody');
+    if (matches.length > 0) {
+        matches.forEach(match => {
+            const row = document.createElement('tr');
+            
+            const imgCell = document.createElement('td');
+            const img = document.createElement('img');
+            img.src = match.url;
+            img.alt = 'Match Image';
+            img.width = 100;
+            imgCell.appendChild(img);
+            
+            const creationTimeCell = document.createElement('td');
+            creationTimeCell.textContent = match.creation_time;
+            
+            const thresholdCell = document.createElement('td');
+            thresholdCell.textContent = match.thresh_hold;
+            
+            row.appendChild(imgCell);
+            row.appendChild(creationTimeCell);
+            row.appendChild(thresholdCell);
+            
+            matchesTableBody.appendChild(row);
+        });
+    } else {
+        const noMatchesRow = document.createElement('tr');
+        const noMatchesCell = document.createElement('td');
+        noMatchesCell.colSpan = 3;
+        noMatchesCell.classList.add('no-matches');
+        noMatchesCell.textContent = 'No matches found';
+        noMatchesRow.appendChild(noMatchesCell);
+        matchesTableBody.appendChild(noMatchesRow);
+    }
+</script>
+{% endblock %}
